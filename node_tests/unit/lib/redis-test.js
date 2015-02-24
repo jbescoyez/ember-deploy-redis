@@ -166,6 +166,23 @@ describe('RedisAdapter', function() {
         return expect(second).to.be.rejectedWith(SilentError, errorMessage);
       });
     });
+
+    describe('upload override', function() {
+      var third;
+
+      beforeEach(function() {
+        third = upload
+          .then(function() {
+            mockShaTaggingAdapter.reset();
+
+            return redisAdapter.upload(DOCUMENT_TO_SAVE, true);
+          });
+      });
+
+      it('resolves when passed key is already in manifest and force is true', function() {
+        return expect(third).to.be.fulfilled;
+      });
+    });
   });
 
   describe('list/activate', function() {
